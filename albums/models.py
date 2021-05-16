@@ -7,4 +7,4 @@ class Album(Ownable):
     id: str
     thumbnail: Optional[str]
     name: str
-    photos: List[dict]
+    photos: List[str]

@@ -29,7 +29,7 @@ async def retrieve_albums(userId: str):
     return albums
 
 
-@album_router.get("/{album_id}/", response_model=Album)
+@album_router.get("/{album_id}/")
 async def retrieve_album(album_id: str):
     query = {"_id": ObjectId(album_id)}
     result = album_collection.find_one(query)
@@ -57,11 +57,11 @@ async def add_album(userId: str, body: dict):
     return {"userId": userId, **body}
 
 
-@album_router.post("/{album_id}/add")
+@album_router.post("/{album_id}/add/")
 async def add_photo_to_album(
     body: dict, album_id: str = Path(..., title="The album id")
 ):
-    query = {"_id": album_id}
+    query = {"_id": ObjectId(album_id)}
     update_query = {"$push": {"photos": body.pop("photoId")}}
 
     album_collection.update_one(query, update_query)
