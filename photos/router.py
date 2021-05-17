@@ -21,7 +21,7 @@ async def retrieve_photos(user_id: str = Path(..., title="The user id of photos"
     return photos_to_dict(result)
 
 
-@photo_router.get("/{user_id}/recent")
+@photo_router.get("/{user_id}/recent/")
 async def retrieve_recent_photos(
     user_id: str = Path(..., title="The user id of photos")
 ):
@@ -30,12 +30,7 @@ async def retrieve_recent_photos(
         photo_collection.find(query).sort("createdAt", pymongo.DESCENDING).limit(20)
     )
 
-    photos = []
-    for doc in result:
-        doc.pop("_id")
-        photos.append(doc)
-
-    return photos
+    return photos_to_dict(result)
 
 
 @photo_router.post("/")
