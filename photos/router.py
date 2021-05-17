@@ -36,7 +36,9 @@ async def retrieve_recent_photos(
 @photo_router.post("/")
 async def add_photo(userId: str, body: dict):
     body["createdAt"] = body["updatedAt"] = pendulum.now()
-    with suppress(DuplicateKeyError):
+    try:
         photo_collection.insert_one({"userId": userId, **body})
+    except DuplicateKeyError:
+        pass
 
     return {"userId": userId, **body}
